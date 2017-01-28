@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+let data = [];
+
+fetch(endpoint)
+  .then(blob => blob.json())
+  .then(response => data = response);
+
+function cb(e) {
+  let sortedArray = search(this.value);
+
+  let htmlResult = sortedArray.map(item => {
+    let regex = new RegExp(this.value, 'gi');
+    let cityName = item.city.replace(regex, `<span class="hl">${this.value}</span>`);
+    return `
+      <li>
+        <span class="name">${cityName} ${item.state}</span>
+        <span class="population">${item.population}</span>
+       
+      </li>
+    `;
+  }).join('');
+
+  document.querySelector('.suggestions').innerHTML = htmlResult; 
+}
+
+function search(inputValue) {
+  let sortedArray = data.filter(function(city){
+    if(city.city.toLowerCase().search(inputValue) >= 0 || city.state.search(inputValue) >= 0) {
+      return true;
+    }
+  });
+  return sortedArray;
+}
+
+document.querySelector('.search').addEventListener('keyup', cb);
+document.querySelector('.search').addEventListener('change', cb);
+</script>
+  </body>
+</html>
