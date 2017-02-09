@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Star wars</title>
+  <style type="text/css">
+    @font-face {
+      font-family: "StarWars";
+      src: 
+           url('Starjedi.ttf') format("truetype"),
+           url('Starjhol.ttf') format("truetype");
+      font-style: normal;
+      font-weight: normal;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background: url(back.jpg) repeat;
+      overflow: hidden;
+    }
+    content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      color: white;
+      font: 16px "StarWars";
+    }
+      content > p {
+      width: 30vw;
+      margin: 0 auto;
+      overflow-y: hidden;
+      position: relative;
+      top: 0%;
+      animation: 100s moveAway linear;
+      }
+    @keyframes moveAway {
+      from {
+        transform: perspective(300px) rotateX(20deg) translateY(145%);
+      }
+      to { 
+        transform: perspective(300px) rotateX(20deg) translateY(-145%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <audio preload="auto">
+    <source src="intro.mp3" type="audio/mpeg">
+  </audio>
+  <content>
+  </content>
+  <script type="text/javascript">
+    window.onload = function () {
+      setTimeout(function() {
+        let promptText = prompt('Введите свой текст, если хотите: ', `It is a period of civil war. Rebel spaceships, striking from a hidden base, have won their first victory against the evil Galactic Empire.
+During the battle, Rebel spies managed to steal secret plans to the Empire's ultimate weapon, the DEATH STAR, an armored space station with enough power to destroy an entire planet.
+Pursued by the Empire's sinister agents, Princess Leia races home aboard her starship, custodian of the stolen plans that can save her people and restore freedom to the galaxy....`);
+
+        if(promptText !== '' && promptText !== null) {
+          // let audio = document.querySelector('audio');
+          // audio.src = 'intro.mp3';
+          // audio.play();
+          let content = document.body.querySelector('content'),
+              p       = document.createElement('p');
+          p.innerText = promptText;
+          content.appendChild(p);
+
+          p.addEventListener("animationend", () => {
+            p.remove();
+          });
+
+        }
+      }, 300);
+    }
+  </script>
+</body>
+</html>
